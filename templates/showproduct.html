@@ -1,0 +1,101 @@
+
+{% extends 'base.html'%}
+
+{% block content%}
+
+{% if product %}
+    {% for pro in product %}
+            <div class='container'> 
+                <div class='row justify-content-center'>
+                    <div class='col-md-6'>
+                        <div class="card m-3" style="width: 18rem;">
+                            <img src="{{pro.image.url}}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title m-1">{{pro.name}}</h5>
+                            <h4 class="card-title m-1">{{pro.price}}</h4>
+                
+                            <p class="card-text m-1">{{pro.description}}</p>
+                            <p class="card-text m-1">{{pro.created_at}}</p>
+                            <a href="{% url 'productdetails' pro.pk %}" class="btn btn-primary mt-2">Details</a>
+
+                         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for i in product.paginator.page_range%}
+            {% if product.number == i %}
+                <li class='page-item activate'>
+                    <a href='?page={{i}}' class='page-link'>{{i}}</a>
+                </li>
+            {%else%}
+                <li class='page-item'>
+                    <a href='?page={{i}}' class='page-link'>{{i}}</a>
+                </li>
+            {% endif %}
+
+            {%endfor%}
+
+
+
+
+
+
+
+   {% endfor %}
+{% else %}
+
+
+    <p>No Products</p>
+
+{% endif %}
+
+<div class='col-md-4'>
+    <h2>categroy</h2>
+    <br>
+    <hr>
+    <a class ="list-group-item" href="{% url 'showproduct'%}">All</a>
+    {% for catgeory in categories %}
+    <li class='list-group-item'>
+        <a href="{% url 'showproduct'%}?catgeory ={{catgeory.name}}">{{ catgeory.name }}</a>
+    </li>
+    {% endfor %}
+
+
+</div>
+
+
+<h4>Pagnation</h4>
+
+<div class="row m-5">
+    <div class="col-md-12 m-3">
+        {% if product.has_other_pages %}
+            
+            {% if product.has_pervious %}
+                <li class="page-item">
+                    <a href="?page={{ product.previous_page_number }}" class="page-link">&laquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a href="?page=1" class="page-link">&laquo;</a>
+                </li>
+
+            {% endif %}
+
+
+            
+            {% elif   product.has_next %}
+                <li class="page-item">
+                    <a href="?page={{ product.next_page_number }}" class="page-link">&raquo;</a>
+                </li>
+            {% else %}
+                    <li class="page-item disabled">
+                        <a href="?page={{ product.paginator.number_pages}}" class="page-link">&raquo;</a>
+                    </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock content %}

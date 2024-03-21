@@ -1,0 +1,60 @@
+
+{% extends 'base.html'%}
+
+{% block content%}
+<h3> Product Details</h3>
+
+            <div class='container'> 
+                <div class='row justify-content-center'>
+                    <div class='col-md-6'>
+                        <a href="{% url 'showproduct' %}" class="btn btn-primary mt-2">Back</a>
+                        <div class="card m-3" style="width: 18rem;">
+                            <img src="{{products.image.url}}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title m-1">{{products.name}}</h5>
+                            <h4 class="card-title m-1">{{products.price}}</h4>
+                
+                            <p class="card-text m-1">{{products.description | safe }}</p>
+                            <p class="card-text m-1">{{products.created_at}}</p>
+                            <a href="{% url 'deleteproduct' products.id%}" class='btn btn-danger m-1'>Delete</a>
+
+                            <a href="{% url 'updateproduct' products.id%}" class='btn btn-primary m-1'>Update</a>
+                         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='col=md-4'>
+                <div style='margin:10px'>
+                    Add comments(no coments)
+                    <br>
+                    <br>
+                    {% if not products.comments.all %}
+                    <p>not comments add</p>
+                    <br>
+                    <hr>
+                    {%else%}
+                    {% for comment in products.comments.all %}
+                    <h3><strong>{{comment.comment_name}}</strong></h3>
+                    <h3><strong>{{comment.comment_body}}</strong></h3>
+                    <p><strong>{{comment.date_add}}</strong></p>
+
+
+                    {%endfor%}
+
+
+                    {%endif%}
+                    <p><a class='btn btn-primary' href="{%url 'add-comment' products.pk %}">Add comment</a></p>
+
+
+
+
+                </div>
+            </div>
+
+
+ 
+
+
+{% endblock content %}
